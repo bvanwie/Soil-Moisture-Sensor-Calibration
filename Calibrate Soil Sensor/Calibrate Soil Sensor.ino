@@ -8,25 +8,33 @@ void setup() {
 
 }
 
+void reportMoisturePercent() {
+  // Maps the current moisture value to a 1-100 scale based on pre-determined AirValue and WaterValue constraints.
+  // Prints the percentage without a /n so that more data can be added to the line.
+  // Is the 'if' statement needed when the map statement is already in place?
+  soilmoisturepercent = map(soilMoistureValue, AirValue, WaterValue, 0, 100);
+  if(soilmoisturepercent >= 100)
+  {
+    Serial.print("\t100 %");
+  }
+  else if(soilmoisturepercent <=0)
+  {
+    Serial.print("\t0 %");
+  }
+  else if(soilmoisturepercent >0 && soilmoisturepercent < 100)
+  {
+    Serial.print("\t");
+    Serial.print(soilmoisturepercent);
+    Serial.print("%");
+  }
+}
+
 void loop() {
   // put your main code here, to run repeatedly:
-soilMoistureValue = analogRead(A0);  //put Sensor insert into soil
-Serial.print(soilMoistureValue);
-soilmoisturepercent = map(soilMoistureValue, AirValue, WaterValue, 0, 100);
-if(soilmoisturepercent >= 100)
-{
-  Serial.println("\t100 %");
-}
-else if(soilmoisturepercent <=0)
-{
-  Serial.println("\t0 %");
-}
-else if(soilmoisturepercent >0 && soilmoisturepercent < 100)
-{
-  Serial.print("\t");
-  Serial.print(soilmoisturepercent);
-  Serial.println("%");
-  
-}
+  soilMoistureValue = analogRead(A0);  //put Sensor insert into soil
+  Serial.print("Sensor reading: ");
+  Serial.print(soilMoistureValue);
+  reportMoisturePercent(); // Call the procedure to print the % moisture.
+  Serial.println();
   delay(250);
 }
